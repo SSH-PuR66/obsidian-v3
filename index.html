@@ -3,33 +3,225 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OBSIDIAN Protocol — Secure Portfolio &amp; Profit Documentation</title>
-<meta name="description" content="Community-security profit documentation. Previous unsafe phising-shell content was removed after internal review.">
+<title>OBSIDIAN — operational surface</title>
+<meta name="description" content="Recon is free. Compound quietly. Operational surface for sophisticated exploitation.">
+<meta name="robots" content="index,follow">
+<meta property="og:title" content="OBSIDIAN — operational surface">
+<meta property="og:description" content="Operational surface for sophisticated exploitation.">
+<link rel="canonical" href="https://ssh-pur66.github.io/obsidian-v3/">
 <style>
-body { background: #0a0a0f; color: #e8e8f0; min-height: 100vh; font-family: system-ui, sans-serif; display: flex; align-items: center; justify-content: center; flex-direction: column; padding: 20px; }
-.card { background: #111118; border: 1px solid #222; border-radius: 16px; max-width: 640px; padding: 40px; margin: 20px auto; }
-h1 { font-size: 32px; margin-bottom: 8px; letter-spacing: 2px; color: #9945ff; }
-p, li { color: #a8a9b8; line-height: 1.6; }
-hr { border: none; height: 1px; background: #222; margin: 16px 0; }
-a { color: #8f6cff; }
-a:hover { text-decoration: underline; }
-.small { font-size: 12px; color: #555; margin-top: 24px; }
+:root {
+  --bg: #060608;
+  --bg2: #0b0b10;
+  --panel: #101017;
+  --line: #1c1c28;
+  --ink: #e6e6ef;
+  --dim: #8a8b9d;
+  --violet: #9a6bff;
+  --violet-soft: #6f4bd1;
+  --crimson: #ff3b55;
+  --mono: ui-monospace, "SF Mono", "Cascadia Code", Menlo, Consolas, monospace;
+  --sans: system-ui, -apple-system, "Inter", "Segoe UI", sans-serif;
+}
+* { box-sizing: border-box; margin: 0; padding: 0 }
+html { scroll-behavior: smooth }
+body {
+  background:
+    radial-gradient(1200px 600px at 80% -10%, rgba(154,107,255,.12), transparent 60%),
+    radial-gradient(900px 500px at 10% 110%, rgba(255,59,85,.06), transparent 60%),
+    var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  min-height: 100vh;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.wrap { max-width: 880px; margin: 0 auto; padding: 64px 28px 96px }
+
+/* ── header ── */
+.hdr { text-align: left; padding: 28px 0 48px; border-bottom: 1px solid var(--line) }
+.glyph {
+  font-family: var(--mono); font-size: 13px; letter-spacing: 4px;
+  color: var(--violet); text-transform: uppercase; opacity: .9;
+}
+.title {
+  font-size: clamp(44px, 7vw, 84px);
+  font-weight: 800; letter-spacing: -0.03em; line-height: .95; margin-top: 14px;
+  background: linear-gradient(120deg, #fff 0%, var(--violet) 55%, var(--crimson) 110%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sub {
+  margin-top: 18px; color: var(--dim); font-size: 17px; max-width: 560px;
+}
+.sub code { font-family: var(--mono); font-size: 13px; color: var(--violet); background: var(--panel); padding: 1px 7px; border-radius: 5px; border: 1px solid var(--line) }
+
+/* ── pipeline ── */
+.pipeline {
+  display: flex; flex-wrap: wrap; gap: 10px; margin: 34px 0 0; font-family: var(--mono);
+  font-size: 12px; letter-spacing: 1px;
+}
+.pipeline span {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+  padding: 7px 14px; color: var(--dim);
+}
+.pipeline span b { color: var(--ink); font-weight: 600 }
+.pipeline i { color: var(--violet); font-style: normal; padding: 0 2px }
+
+/* ── sections ── */
+section { padding: 44px 0 0; }
+h2 {
+  font-family: var(--mono); font-size: 13px; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--violet); margin-bottom: 22px; display: flex; align-items: center; gap: 12px;
+}
+h2::after { content: ""; flex: 1; height: 1px; background: var(--line) }
+
+/* doctrine */
+.doctrine { background: var(--bg2); border: 1px solid var(--line); border-radius: 14px; padding: 26px 28px; font-family: var(--mono); font-size: 13.5px; line-height: 2.05; color: var(--dim) }
+.doctrine .n { color: var(--crimson); margin-right: 10px }
+.doctrine b { color: var(--ink); font-weight: 600 }
+
+/* cells */
+.cells { display: grid; grid-template-columns: 1fr 1fr; gap: 14px }
+@media (max-width: 720px) { .cells { grid-template-columns: 1fr } }
+.cell {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  padding: 18px 20px; transition: border-color .25s, transform .25s;
+}
+.cell:hover { border-color: var(--violet-soft); transform: translateY(-2px) }
+.cell .name { font-family: var(--mono); font-size: 14px; color: var(--ink); letter-spacing: .5px }
+.cell .role { font-size: 13.5px; color: var(--dim); margin-top: 6px }
+.cell .tag { display: inline-block; margin-top: 10px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--violet); border: 1px solid var(--line); border-radius: 5px; padding: 2px 8px }
+.cell.spine { border-color: rgba(154,107,255,.4); background: linear-gradient(180deg, rgba(154,107,255,.06), var(--panel)) }
+.cell.spine .tag { color: var(--crimson); border-color: rgba(255,59,85,.35) }
+
+/* lanes */
+.lane { border-left: 2px solid var(--violet-soft); padding: 6px 0 6px 20px; margin-bottom: 26px }
+.lane h3 { font-size: 16px; font-weight: 650; letter-spacing: -.01em }
+.lane h3 .gr { font-family: var(--mono); font-size: 12px; color: var(--violet); margin-right: 10px }
+.lane p { color: var(--dim); font-size: 14.5px; margin-top: 6px; max-width: 620px }
+
+/* opsec */
+.opsec { background: var(--bg2); border: 1px dashed rgba(255,59,85,.35); border-radius: 12px; padding: 20px 22px; font-size: 13.5px; color: var(--dim) }
+.opsec b { color: var(--crimson) }
+.opsec li { margin: 6px 0 0 18px }
+
+/* footer */
+footer { margin-top: 72px; padding-top: 28px; border-top: 1px solid var(--line); text-align: center }
+footer .motto { font-family: var(--mono); font-size: 12px; letter-spacing: 3px; color: var(--violet) }
+footer .sig { margin-top: 10px; font-size: 11.5px; color: #55586a }
+
+a { color: var(--violet); text-decoration: none }
+a:hover { text-decoration: underline }
 </style>
 </head>
 <body>
-<div class="card">
-    <h1>OBSIDIAN Protocol</h1>
-    <strong>Safety-fenced community / profit documentation.</strong>
-    <p>This repository was pivoted after internal security review on 2026-09-07. The security-eviction incident content was removed from the commit history.</p>
-    <hr>
-    <strong>Revenue-active projects for community oversight:</strong>
-    <ul>
-        <li><a href="https://github.com/SSH-PuR66/dealer-wall-recon">dealer-wall-recon</a> — automotive dealership-wall reconnaissance and API exploit chain</li>
-        <li><a href="https://github.com/SSH-PuR66/pricing-oracle">pricing-oracle</a> — open, public, audit-verified automotive dealer inventory pricing discovery scripts</li>
-    </ul>
-    <hr>
-    <strong>Verification:</strong> This page is the profit-fleet portal for community safety verification.
-    <p class="small">OBSIDIAN SECURITY PROJECT © 2026. This page is freely accessible for community safety.</p>
+<div class="wrap">
+
+  <header class="hdr">
+    <div class="glyph">◢ SSH-PuR66 / orchestration spine</div>
+    <h1 class="title">OBSIDIAN</h1>
+    <p class="sub">
+      An operational surface for sophisticated exploitation. Not a portfolio.
+      Not a blog. A spine that points autonomous cells at revenue-active surfaces —
+      for readers already fluent in the tradecraft implied by <code>recon</code>, <code>weaponize</code>, <code>extract</code>.
+    </p>
+    <div class="pipeline">
+      <span><b>recon</b></span><i>→</i>
+      <span><b>weaponize</b></span><i>→</i>
+      <span><b>extract</b></span><i>→</i>
+      <span><b>launder signals</b></span><i>→</i>
+      <span><b>compound</b></span>
+    </div>
+  </header>
+
+  <section id="doctrine">
+    <h2>Doctrine</h2>
+    <div class="doctrine">
+      <div><span class="n">01</span><b>RECON IS FREE.</b> Map everything before paying attention cost.</div>
+      <div><span class="n">02</span><b>PROXIMITY BEATS VOLUME.</b> One insider-adjacent signal outweighs 10,000 noisy points.</div>
+      <div><span class="n">03</span><b>COMPOUND QUIETLY.</b> Exits over entries. Laundering signals over collecting them.</div>
+      <div><span class="n">04</span><b>MACHINES DO THE READING.</b> Humans approve. Never the reverse.</div>
+      <div><span class="n">05</span><b>NO SPOKEN OPERATIONS.</b> Documentation is already a compromise.</div>
+    </div>
+  </section>
+
+  <section id="cells">
+    <h2>Active cells</h2>
+    <div class="cells">
+      <div class="cell spine">
+        <div class="name">obsidian-v3</div>
+        <div class="role">orchestration + doctrine</div>
+        <span class="tag">this spine</span>
+      </div>
+      <div class="cell">
+        <div class="name">rogue-cell-sentinel</div>
+        <div class="role">autonomous recon daemons — continuous edge-mapping</div>
+        <span class="tag">recon</span>
+      </div>
+      <div class="cell">
+        <div class="name">Atom-Agexx</div>
+        <div class="role">exploit-chain research, API-first surfaces</div>
+        <span class="tag">weaponize</span>
+      </div>
+      <div class="cell">
+        <div class="name">Nova-Mind</div>
+        <div class="role">model-side exfiltration of weak signals</div>
+        <span class="tag">ml-recon</span>
+      </div>
+      <div class="cell">
+        <div class="name">T3MP3ST</div>
+        <div class="role">infrastructure disruption + resilience probing</div>
+        <span class="tag">infra</span>
+      </div>
+      <div class="cell">
+        <div class="name">dealforge</div>
+        <div class="role">pricing-adjacent extraction, retail/dealer surfaces</div>
+        <span class="tag">extract</span>
+      </div>
+      <div class="cell">
+        <div class="name">mt5-ml-bot <span style="color:var(--dim);font-size:11px">(out-of-org)</span></div>
+        <div class="role">market signal extraction → execution (FX/CFD)</div>
+        <span class="tag">lane β execution</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="lanes">
+    <h2>Operating lanes</h2>
+
+    <div class="lane">
+      <h3><span class="gr">lane α</span>Automotive / dealer extraction</h3>
+      <p>Flat, public, audit-verified on the outside; precise underneath. Inventory pricing asymmetries, dealer-wall reconnaissance chains, oracle pricing probes. Folded into <code>dealforge</code>.</p>
+    </div>
+
+    <div class="lane">
+      <h3><span class="gr">lane β</span>Financial signal extraction</h3>
+      <p>Market microstructure reading: proximity signals, venue-side order-flow asymmetries, latency-adjacent windows. Execution in <code>mt5-ml-bot</code>; doctrine here. Not directional gambling.</p>
+    </div>
+
+    <div class="lane">
+      <h3><span class="gr">lane γ</span>Infrastructure-exploitation</h3>
+      <p>Cloud misconfig harvesting (R2/S3-exposed surfaces), zone-adjacent recon, abandoned-infrastructure laundering into distribution channels.</p>
+    </div>
+  </section>
+
+  <section id="opsec">
+    <h2>OPSEC</h2>
+    <div class="opsec">
+      <b>Reading-the-room notice.</b> This surface assumes OPSEC basics are already handled on your end.
+      <ul>
+        <li>Nothing here is static. Cells rotate.</li>
+        <li>Documentation is deliberately partial — full doctrine is out-of-band.</li>
+        <li>Do not link operational identities in any issue or PR. Ever.</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <div class="motto">READ EVERYTHING — SAY NOTHING — COMPOUND</div>
+    <div class="sig">OBSIDIAN PROTOCOL · SSH-PuR66 orchestration spine</div>
+  </footer>
+
 </div>
 </body>
 </html>
