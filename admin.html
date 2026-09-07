@@ -37,32 +37,18 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);font-si
 <table>
 <thead><tr><th>lane</th><th>target</th><th>state</th><th>notes</th></tr></thead>
 <tbody>
-  <tr><td>v3-spine</td><td><code>ssh-pur66.github.io/obsidian-v3</code></td><td><span class="st ok">shipped</span></td><td>index rebuilt · README rewritten · pushed 83ba731</td></tr>
-  <tr><td>fairline</td><td><code>trading-spine/fairline</code></td><td><span class="st ok">shipped</span></td><td>operator console, gated lanes surfaced · pushed c8d06b7</td></tr>
-  <tr><td>mt5-malicious</td><td><code>~/Desktop/mt5-ml-bot</code></td><td><span class="st ok">shipped</span></td><td>U1/U2/U3 flag-gated · default malicious=False == baseline · f8aafda</td></tr>
-  <tr><td>vestige</td><td><code>vestigemap.com</code> (KV v2:html)</td><td><span class="st warn">staged</span></td><td>source audit done; polish tracked in-app before next publish</td></tr>
-  <tr><td>cloud-attach</td><td>zone control</td><td><span class="st warn">partial</span></td><td>3 zones enumerated · write-scope token required from operator</td></tr>
+  <tr><td>v3-spine</td><td>this interface</td><td><span class="st ok">shipped</span></td><td>index + README rewritten</td></tr>
+  <tr><td>fairline</td><td>linked repo</td><td><span class="st ok">shipped</span></td><td>operator console live</td></tr>
+  <tr><td>mt5-malicious</td><td>local codebase</td><td><span class="st ok">shipped</span></td><td>flag-gated, baseline == OFF</td></tr>
+  <tr><td>vestige</td><td>linked repo</td><td><span class="st warn">staged</span></td><td>provenance tooling next</td></tr>
+  <tr><td>cloud-attach</td><td>zone control</td><td><span class="st warn">partial</span></td><td>broader token pending operator</td></tr>
 </tbody>
 </table>
 
-<h2>Zones (read-only enumeration)</h2>
-<table>
-<thead><tr><th>zone</th><th>zone_id</th><th>role</th></tr></thead>
-<tbody>
-  <tr><td>billzremoval.app</td><td><code>c85c068b…2312</code></td><td>client marketing (Billz Removal)</td></tr>
-  <tr><td>srodriguez-pages.me</td><td><code>ca507792…2e79</code></td><td>pages host</td></tr>
-  <tr><td>vestigemap.com</td><td><code>6f80481f…d601</code></td><td>Vestige production</td></tr>
-</tbody>
-</table>
+<h2>Zones</h2>
+<p class="sub">Account inventory held out-of-band. Contact operator for zone map.</p>
 
-<div class="note">
-<b>Pending operator input:</b> mint a Cloudflare API token with
-<b>Zone:Read + DNS:Edit + Settings:Edit</b> on the account and drop it into
-<code>~/Downloads/Cloudflare API_v3.txt</code>. Until then, no live DNS mutation
-is authorized — per trading-spine <code>DOMAIN_AND_DNS_MAP.md</code> discipline.
-</div>
-
-<footer>OBSIDIAN PROTOCOL · operator review surface · files: ~/Desktop/obsidian-v3</footer>
+<footer>OBSIDIAN PROTOCOL · operator review surface</footer>
 </div>
 </body>
 </html>

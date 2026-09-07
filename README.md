@@ -32,32 +32,25 @@ The org behind it (`SSH-PuR66`) is a loose constellation of autonomous cells. Ea
 
 ---
 
-## active cells
+## posture
 
-| cell | weapon | surface |
-|---|---|---|
-| `rogue-cell-sentinel` | autonomous recon daemons | continuous edge-mapping |
-| `Atom-Agexx` | exploit-chain research | API-first surfaces |
-| `Nova-Mind` | model-side exfiltration of weak signals | ML-assisted recon |
-| `T3MP3ST` | infrastructure disruption testing | resilience probing |
-| `dealforge` | pricing-adjacent extraction | retail/dealer surfaces |
-| `mt5-ml-bot` *(external)* | market signal extraction → execution | FX/CFD surfaces |
-| `obsidian-v3` | orchestration + doctrine | *this repository* |
+Cells exist. They are decoupled. Coordination lanes exist. Details rotate.
 
-Cells are deliberately decoupled. Compromise of one does not map the others.
+Nothing operationally specific is documented in this repository by design.
 
 ---
 
-## operating lanes
+## doctrine
 
-### lane α — automotive/dealer extraction
-Flat, public, audit-verified on the outside; precise underneath. Inventory pricing asymmetries, dealer-wall reconnaissance chains, oracle pricing probes. *(formerly `dealer-wall-recon` / `pricing-oracle` — now folded into `dealforge`.)*
+```
+1. RECON IS FREE.
+2. PROXIMITY BEATS VOLUME.
+3. COMPOUND QUIETLY.
+4. MACHINES DO THE READING.
+5. NO SPOKEN OPERATIONS.
+```
 
-### lane β — financial signal extraction
-Market microstructure reading: proximity signals (venue-side order-flow asymmetries), latency-adjacent windows, not directional gambling. Execution lives in `mt5-ml-bot`; doctrine lives here.
-
-### lane γ — infrastructure-exploitation
-Cloud misconfig harvesting (R2/S3-exposed surfaces), zone-adjacent recon, abandoned-infrastructure laundering into distribution channels.
+Full doctrine and active inventories live out-of-band. Operational identities must never appear in commits, issues, or PRs.
 
 ---
 
